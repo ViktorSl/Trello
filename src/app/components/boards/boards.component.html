@@ -1,0 +1,104 @@
+<div class="container">
+  <mat-card class="board">
+    <mat-card-header class="board__header">
+      <mat-card-title>Report</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <form [formGroup]="form" class="form">
+        <mat-form-field class="board__select">
+          <mat-select
+            placeholder="Boards"
+            formControlName="boardsSelect"
+            multiple>
+            <mat-option *ngFor="let board of boards"
+                        [value]="board?.id"> {{ board?.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="board__select">
+          <mat-select
+            placeholder="Items"
+            formControlName="itemsSelect"
+            multiple >
+            <mat-option *ngFor="let item of items"
+                        [value]="item"> {{ item }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+
+      <mat-table
+        [dataSource]="dataSource"
+        matSort
+        matSortActive="board"
+        (matSortChange)="sortData($event)">
+
+        <ng-container matColumnDef="board">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Board</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.name}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="listname">
+          <mat-header-cell *matHeaderCellDef>ListName</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-list>
+              <mat-list-item *ngFor="let list of element.lists">
+                {{ list}}
+              </mat-list-item>
+            </mat-list>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="listsquantity">
+          <mat-header-cell *matHeaderCellDef >Lists Quantity</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ element.listsQuantity }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cardsquantity">
+          <mat-header-cell *matHeaderCellDef >Cards Quantity</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.cardsQuantity}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+          <mat-header-cell *matHeaderCellDef>UserName</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-list>
+              <mat-list-item *ngFor="let user of element.users">
+                {{ user }}
+              </mat-list-item>
+            </mat-list>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="userquantity">
+          <mat-header-cell *matHeaderCellDef>Users Quantity</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.usersQuantity}}
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator
+        #paginator
+        [length]="100"
+        [pageSize]="5"
+        [pageSizeOptions]="[2, 5, 10, 25]">
+      </mat-paginator>
+
+    </mat-card-content>
+    <mat-card-actions align="end" class="board__submit">
+      <button mat-raised-button color="primary" (click)="print()">Print</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
